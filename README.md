@@ -5,3 +5,5 @@ next, create a new terminal use cd to acess to your directory and add this line 
   npm i discord.js@13.6.0 
 and this line to run .js file Bot : 
   node ./src/Bot.js
+Bot url :
+  https://discord.com/api/oauth2/authorize?client_id=1120781217504178176&scope=bot
