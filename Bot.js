@@ -1,30 +1,47 @@
 require("dotenv").config();
 
-const { Client, Intents , GatewayIntentBits  } = require('discord.js');
+const { Client, Intents ,MessageEmbed } = require('discord.js');
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS]
 });
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
+
 client.on('messageCreate', (message) => {
   if (message.content.toLowerCase() === 'hi') {
-    message.channel.send('Hello there!');
+    const embed = new MessageEmbed().setTitle('Greetings').setDescription('Hello there!').setColor('#00ff00');
+    message.channel.send({ embeds: [embed] });
   }
+ 
 });
 
-client.on('guildMemberAdd', (member) => {
-  console.log(`dkhal l methode`);
+client.on('guildMemberAdd', (member , message) => {
+  console.log(`Entered guildMemberAdd event`);
   const channelName = 'general'; // Replace 'general' with the name of your desired channel
 
   const channel = member.guild.channels.cache.find(ch => ch.name === channelName);
   if (!channel) return;
   console.log(`Welcome to the server, ${member.user.tag}!`);
-  channel.send(`Welcome to the server, ${member.user}!`); // Send the welcome message
+  channel.send(`Welcome to the server, ${member.user.tag}!`); 
+  
+  const embed = new MessageEmbed()
+      .setTitle('Welcome')
+      .setDescription(`Welcome to the server, ${member.user}!`)
+      .setColor('#00ff00');
+      channel.send({ embeds: [embed] })
+      .then(sentMessage => {
+        // Adding reactions to the poll message
+        sentMessage.react('❌'); // Thumbs up
+        sentMessage.react('✅'); // Thumbs down
+      })
+      .catch(console.error);
+      
 });
+
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
