@@ -40,7 +40,13 @@ client.on('guildMemberAdd', (member , message) => {
       })
       .catch(console.error);
       
+      const welcomeMessage = `Welcome to the server, ${member.user.tag}!`;
+
+      member.send(welcomeMessage) // Sending a welcome message in private
+        .then(() => console.log(`Sent a welcome message to ${member.user.tag}`))
+        .catch(console.error);
 });
+
 
 
 const token = process.env.DISCORD_TOKEN;
